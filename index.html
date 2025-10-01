@@ -18,7 +18,6 @@
         <label for="loginPassword">Пароль</label>
         <input id="loginPassword" name="password" type="password" autocomplete="current-password" required />
       </div>
-      <p id="loginHint" class="hint">Подрядчик «Рога и Копыта»: rogaikopyta / qwerty123</p>
       <p id="loginError" class="error hidden">Неверный логин или пароль</p>
       <div class="form-actions">
         <button type="submit">Войти</button>
@@ -27,6 +26,10 @@
   </div>
 
   <div id="app" class="hidden">
+    <header class="app-header">
+      <div class="company-name">Подрядчик «Рога и Копыта»</div>
+      <button id="logoutBtn" class="logout-button" type="button">Выход</button>
+    </header>
     <h1>Форма ввода данных</h1>
     <form id="dataForm">
       <div class="column">

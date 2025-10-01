@@ -4,6 +4,7 @@ const app = document.getElementById('app');
 const loginScreen = document.getElementById('loginScreen');
 const loginForm = document.getElementById('loginForm');
 const loginError = document.getElementById('loginError');
+const logoutBtn = document.getElementById('logoutBtn');
 const recordStringEl = document.getElementById('recordString');
 
 const credentials = {
@@ -25,6 +26,16 @@ if (loginForm) {
     } else {
       loginError.classList.remove('hidden');
     }
+  });
+}
+
+if (logoutBtn && loginForm) {
+  logoutBtn.addEventListener('click', () => {
+    app.classList.add('hidden');
+    loginScreen.classList.remove('hidden');
+    loginForm.reset();
+    loginError.classList.add('hidden');
+    setTimeout(() => document.getElementById('loginUsername').focus(), 0);
   });
 }
 
