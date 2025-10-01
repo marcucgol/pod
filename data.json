@@ -11,9 +11,11 @@
     "address": "1",
     "contractorCost": "1",
     "files": [
-      "uploads\\1758014871790\\server.js"
+      "uploads/1758014871790/server.js"
     ],
-    "checkDate": "16.09.2025, 12:27:51"
+    "checkDate": "16.09.2025, 12:27:51",
+    "contractorId": "rogaikopyta",
+    "contractorName": "Рога и Копыта"
   },
   {
     "id": "1758019534428",
@@ -27,9 +29,11 @@
     "address": "ДНР, г. Донецк, пр-кт Александра Матросова, д. 27А",
     "contractorCost": "29432091,5",
     "files": [
-      "uploads\\1758019534428\\style.css"
+      "uploads/1758019534428/style.css"
     ],
-    "checkDate": "16.09.2025, 13:45:34"
+    "checkDate": "16.09.2025, 13:45:34",
+    "contractorId": "rogaikopyta",
+    "contractorName": "Рога и Копыта"
   },
   {
     "id": "1758119975199",
@@ -43,8 +47,28 @@
     "address": "1",
     "contractorCost": "1",
     "files": [
-      "uploads\\1758119975199\\index.html"
+      "uploads/1758119975199/index.html"
     ],
-    "checkDate": "17.09.2025, 17:39:35"
+    "checkDate": "17.09.2025, 17:39:35",
+    "contractorId": "rogaikopyta",
+    "contractorName": "Рога и Копыта"
+  },
+  {
+    "id": "1759314765676",
+    "number": "2",
+    "uko": "2",
+    "contract": "2",
+    "purpose": "2",
+    "year": "21.09.2025",
+    "ks3": "КС-3 №2 от 18.09.2025",
+    "eventName": "Демонстрационный проект",
+    "address": "г. Ростов-на-Дону",
+    "contractorCost": "500000",
+    "files": [
+      "uploads/1759314765676/Кац Нахимова, 2.pdf"
+    ],
+    "checkDate": "18.09.2025, 09:15:12",
+    "contractorId": "rogaikopyta",
+    "contractorName": "Рога и Копыта"
   }
 ]

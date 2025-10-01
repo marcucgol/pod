@@ -10,9 +10,142 @@ const companyNameEl = document.getElementById('companyName');
 const numberInput = document.getElementById('number');
 const loginUsernameInput = document.getElementById('loginUsername');
 const loginPasswordInput = document.getElementById('loginPassword');
-const defaultLoginErrorMessage = loginError ? loginError.textContent : '';
+const tabButtons = document.querySelectorAll('.tab-button');
+const tabPanels = document.querySelectorAll('.tab-panel');
+const recordsContainer = document.getElementById('recordsContainer');
+const formError = document.getElementById('formError');
+const dropZone = document.getElementById('dropZone');
+const dropZoneText = document.getElementById('dropZoneText');
+const fileInput = document.getElementById('attachments');
+const yearInput = document.getElementById('year');
+const dataForm = document.getElementById('dataForm');
 
+const defaultLoginErrorMessage = loginError ? loginError.textContent : '';
 let activeContractor = null;
+
+function setActiveTab(targetId) {
+  tabButtons.forEach((button) => {
+    const isActive = button.dataset.target === targetId;
+    button.classList.toggle('active', isActive);
+  });
+
+  tabPanels.forEach((panel) => {
+    const isActive = panel.id === targetId;
+    panel.classList.toggle('hidden', !isActive);
+  });
+}
+
+tabButtons.forEach((button) => {
+  button.addEventListener('click', () => {
+    setActiveTab(button.dataset.target);
+    if (button.dataset.target === 'recordsTab') {
+      loadRecords();
+    }
+  });
+});
+
+function showFormError(message) {
+  if (!formError) return;
+  formError.textContent = message;
+  formError.classList.toggle('hidden', !message);
+}
+
+function renderRecords(records) {
+  if (!recordsContainer) return;
+
+  recordsContainer.innerHTML = '';
+
+  if (!records || records.length === 0) {
+    const empty = document.createElement('p');
+    empty.className = 'empty-state';
+    empty.textContent = 'Нет отправленных форм';
+    recordsContainer.appendChild(empty);
+    return;
+  }
+
+  records.forEach((record) => {
+    const card = document.createElement('article');
+    card.className = 'record-card';
+
+    const title = document.createElement('h2');
+    title.textContent = `№ ${record.number || '-'} — ${record.contract || '-'}`;
+
+    const meta = document.createElement('p');
+    meta.className = 'record-meta';
+    meta.textContent = `Проверено: ${record.checkDate || '—'}`;
+
+    const list = document.createElement('dl');
+    list.className = 'record-details';
+
+    const detailMap = [
+      ['УКО', record.uko],
+      ['Назначение', record.purpose],
+      ['Дата', record.year],
+      ['КС-3', record.ks3],
+      ['Мероприятие', record.eventName],
+      ['Адрес', record.address],
+      ['Стоимость с НДС', record.contractorCost]
+    ];
+
+    detailMap.forEach(([label, value]) => {
+      if (!value) return;
+      const dt = document.createElement('dt');
+      dt.textContent = label;
+      const dd = document.createElement('dd');
+      dd.textContent = value;
+      list.append(dt, dd);
+    });
+
+    card.append(title, meta, list);
+
+    const files = Array.isArray(record.files) ? record.files : [];
+    if (files.length > 0) {
+      const filesTitle = document.createElement('h3');
+      filesTitle.textContent = 'Файлы';
+      const fileList = document.createElement('ul');
+      fileList.className = 'record-files';
+      files.forEach((filePath) => {
+        const item = document.createElement('li');
+        const link = document.createElement('a');
+        link.href = filePath;
+        const fileNamePart = filePath.split('/').pop() || '';
+        let fileName = fileNamePart;
+        try {
+          fileName = decodeURIComponent(fileNamePart);
+        } catch (error) {
+          fileName = fileNamePart;
+        }
+        link.textContent = fileName;
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        item.appendChild(link);
+        fileList.appendChild(item);
+      });
+      card.append(filesTitle, fileList);
+    }
+
+    recordsContainer.appendChild(card);
+  });
+}
+
+async function loadRecords() {
+  if (!activeContractor || !recordsContainer) return;
+
+  try {
+    const response = await fetch(`/records?contractorId=${encodeURIComponent(activeContractor.id)}`);
+    if (!response.ok) {
+      throw new Error('Failed to load records');
+    }
+    const records = await response.json();
+    renderRecords(records);
+  } catch (error) {
+    recordsContainer.innerHTML = '';
+    const errorEl = document.createElement('p');
+    errorEl.className = 'error';
+    errorEl.textContent = 'Не удалось загрузить формы. Попробуйте позже.';
+    recordsContainer.appendChild(errorEl);
+  }
+}
 
 if (loginForm) {
   loginForm.addEventListener('submit', async (e) => {
@@ -61,6 +194,11 @@ if (loginForm) {
         companyNameEl.textContent = `Подрядчик ${decoratedName}`;
       }
 
+      showFormError('');
+      setActiveTab('formTab');
+      renderRecords([]);
+      await loadRecords();
+
       setTimeout(() => {
         if (numberInput) {
           numberInput.focus();
@@ -88,6 +226,12 @@ if (logoutBtn && loginForm) {
       loginError.textContent = defaultLoginErrorMessage;
       loginError.classList.add('hidden');
     }
+    showFormError('');
+    if (recordsContainer) {
+      recordsContainer.innerHTML = '';
+    }
+    updateDropZoneText();
+    setActiveTab('formTab');
     setTimeout(() => {
       if (loginUsernameInput) {
         loginUsernameInput.focus();
@@ -105,7 +249,6 @@ if (nextBtn && modal) {
   });
 }
 
-const yearInput = document.getElementById('year');
 if (yearInput) {
   yearInput.addEventListener('input', (e) => {
     let value = e.target.value.replace(/\D/g, '').slice(0, 8);
@@ -119,9 +262,19 @@ if (yearInput) {
   });
 }
 
-const dropZone = document.getElementById('dropZone');
-const dropZoneText = document.getElementById('dropZoneText');
-const fileInput = document.getElementById('attachments');
+function validateFiles(fileList) {
+  const invalid = Array.from(fileList || []).filter((file) =>
+    file.name.toLowerCase().endsWith('.exe')
+  );
+
+  if (invalid.length > 0) {
+    showFormError('Загрузка файлов с расширением .exe запрещена');
+    return false;
+  }
+
+  showFormError('');
+  return true;
+}
 
 function updateDropZoneText() {
   if (!dropZoneText || !fileInput) return;
@@ -150,16 +303,29 @@ if (dropZone && fileInput) {
   dropZone.addEventListener('drop', (e) => {
     e.preventDefault();
     dropZone.classList.remove('dragover');
-    fileInput.files = e.dataTransfer.files;
+    const files = e.dataTransfer.files;
+    if (!validateFiles(files)) {
+      return;
+    }
+    if (typeof DataTransfer !== 'undefined') {
+      const dataTransfer = new DataTransfer();
+      Array.from(files).forEach((file) => dataTransfer.items.add(file));
+      fileInput.files = dataTransfer.files;
+    } else {
+      fileInput.files = files;
+    }
     updateDropZoneText();
   });
 }
 
 if (fileInput) {
-  fileInput.addEventListener('change', updateDropZoneText);
+  fileInput.addEventListener('change', () => {
+    if (!validateFiles(fileInput.files)) {
+      fileInput.value = '';
+    }
+    updateDropZoneText();
+  });
 }
-
-const dataForm = document.getElementById('dataForm');
 
 function formatRecordString(formData) {
   const parts = [
@@ -181,16 +347,43 @@ if (dataForm) {
     e.preventDefault();
     const form = e.target;
     const formData = new FormData(form);
+
+    if (!activeContractor) {
+      showFormError('Сначала выполните вход');
+      return;
+    }
+
+    showFormError('');
+
+    if (!validateFiles(fileInput?.files)) {
+      return;
+    }
+
+    formData.append('contractorId', activeContractor.id);
     const summary = formatRecordString(formData);
-    await fetch('/records', {
-      method: 'POST',
-      body: formData
-    });
-    form.reset();
-    updateDropZoneText();
-    if (recordStringEl && modal) {
-      recordStringEl.textContent = summary;
-      modal.classList.remove('hidden');
+
+    try {
+      const response = await fetch('/records', {
+        method: 'POST',
+        body: formData
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({ error: '' }));
+        const message = errorData.error || 'Не удалось отправить форму. Попробуйте позже.';
+        showFormError(message);
+        return;
+      }
+
+      await loadRecords();
+      form.reset();
+      updateDropZoneText();
+      if (recordStringEl && modal) {
+        recordStringEl.textContent = summary;
+        modal.classList.remove('hidden');
+      }
+    } catch (error) {
+      showFormError('Не удалось отправить форму. Попробуйте позже.');
     }
   });
 }
