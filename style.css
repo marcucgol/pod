@@ -85,6 +85,17 @@ form {
   gap: 20px;
 }
 
+#recordsTab {
+  align-items: stretch;
+  padding: 0 32px 40px;
+  box-sizing: border-box;
+}
+
+#recordsTab h1 {
+  margin-left: 0;
+  text-align: left;
+}
+
 .column {
   flex: 1;
   min-width: 300px;
@@ -178,6 +189,21 @@ button:hover {
   display: flex;
   flex-direction: column;
   gap: 16px;
+}
+
+#recordsTab .records-container {
+  width: 100%;
+  max-width: none;
+  padding: 0;
+}
+
+#recordsTab .records-container > * {
+  width: 100%;
+}
+
+#recordsTab .empty-state {
+  padding: 60px 0;
+  font-size: 18px;
 }
 
 .record-card {
