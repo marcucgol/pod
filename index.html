@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ввод данных</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>Форма ввода данных</h1>
+  <form id="dataForm">
+    <div class="column">
+      <div class="form-group">
+        <label for="number">№</label>
+        <input id="number" name="number" required />
+      </div>
+      <div class="form-group">
+        <label for="uko">УКО</label>
+        <input id="uko" name="uko" required />
+      </div>
+      <div class="form-group">
+        <label for="contract">№ договора</label>
+        <input id="contract" name="contract" required />
+      </div>
+      <div class="form-group">
+        <label for="purpose">Назначение</label>
+        <input id="purpose" name="purpose" required />
+      </div>
+      <div class="form-group">
+        <label for="year">ГОД (дд.мм.гггг)</label>
+        <input id="year" name="year" placeholder="дд.мм.гггг" required />
+      </div>
+    </div>
+    <div class="column">
+      <div class="form-group">
+        <label for="ks3">КС-3 (КС-3 № ХХ от дд.мм.гггг)</label>
+        <input id="ks3" name="ks3" required />
+      </div>
+      <div class="form-group">
+        <label for="eventName">Наименование мероприятия</label>
+        <input id="eventName" name="eventName" required />
+      </div>
+      <div class="form-group">
+        <label for="address">Адрес объекта</label>
+        <input id="address" name="address" required />
+      </div>
+      <div class="form-group">
+        <label for="contractorCost">Подрядчик Стоимость с НДС (руб.)</label>
+        <input id="contractorCost" name="contractorCost" required />
+      </div>
+    </div>
+    <div class="form-group full-width">
+      <label for="attachments">Файлы</label>
+      <div id="dropZone" class="drop-zone">
+        <span id="dropZoneText">выбрать файл</span>
+      </div>
+      <input type="file" id="attachments" name="attachments" multiple hidden />
+    </div>
+    <div class="form-actions">
+      <button type="submit">Отправить</button>
+    </div>
+  </form>
+  <div id="successModal" class="modal hidden">
+    <div class="modal-content">
+      <p>Форма отправлена</p>
+      <button id="nextBtn">Перейти к следующей</button>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

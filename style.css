@@ -1,0 +1,141 @@
+body {
+  background-color: #e6f2ff;
+  color: #003366;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+h1 {
+  color: #003366;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+form {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  background-color: #fff;
+  border: 2px solid #3399ff;
+  border-radius: 16px;
+  padding: 30px;
+  width: 90%;
+  max-width: 1200px;
+  box-sizing: border-box;
+  gap: 40px;
+}
+
+.column {
+  flex: 1;
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  margin-bottom: 6px;
+  font-weight: bold;
+}
+
+input {
+  padding: 12px;
+  border: 2px solid #3399ff;
+  border-radius: 12px;
+  background-color: #fff;
+  color: #003366;
+  font-size: 16px;
+}
+
+.drop-zone {
+  border: 2px dashed #3399ff;
+  border-radius: 12px;
+  background-color: #fff;
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(51, 153, 255, 0.4);
+  cursor: pointer;
+}
+
+.drop-zone.dragover {
+  background-color: #e3f2fd;
+}
+
+.form-actions {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 24px;
+}
+
+.full-width {
+  width: 100%;
+  flex-basis: 100%;
+}
+
+button {
+  background-color: #3399ff;
+  color: #fff;
+  border: none;
+  padding: 12px 32px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 24px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #1e88e5;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.hidden {
+  display: none;
+}
+
+.modal-content {
+  background-color: #fff;
+  border: 2px solid #3399ff;
+  border-radius: 16px;
+  padding: 20px 30px;
+  text-align: center;
+}
+
+.modal-content p {
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+@media (max-width: 600px) {
+  form {
+    width: 95%;
+    padding: 20px;
+  }
+  .column {
+    min-width: 100%;
+  }
+}
