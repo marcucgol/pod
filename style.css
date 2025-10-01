@@ -174,6 +174,41 @@ button:hover {
   margin-top: 0;
 }
 
+.contractor-card {
+  border: 2px solid rgba(51, 153, 255, 0.5);
+  border-radius: 12px;
+  padding: 16px;
+  margin-top: 16px;
+  background: rgba(227, 242, 253, 0.6);
+}
+
+.contractor-title {
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #1e88e5;
+}
+
+.contractor-name {
+  font-size: 20px;
+  font-weight: bold;
+  margin: 8px 0 4px;
+}
+
+.contractor-credentials {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 15px;
+}
+
+.contractor-credentials li strong {
+  font-weight: 600;
+}
+
 .hint {
   color: #1e88e5;
   font-size: 14px;
