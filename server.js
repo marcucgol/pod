@@ -7,7 +7,11 @@ const app = express();
 const DATA_FILE = path.join(__dirname, 'data.json');
 
 app.use(express.json());
-app.use(express.static(path.join(__dirname, 'public')));
+const publicDir = path.join(__dirname, 'public');
+if (fs.existsSync(publicDir)) {
+  app.use(express.static(publicDir));
+}
+app.use(express.static(__dirname));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 function readData() {

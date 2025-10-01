@@ -7,8 +7,8 @@ const loginError = document.getElementById('loginError');
 const recordStringEl = document.getElementById('recordString');
 
 const credentials = {
-  username: 'podryad',
-  password: '12345'
+  username: 'rogaikopyta',
+  password: 'qwerty123'
 };
 
 if (loginForm) {
