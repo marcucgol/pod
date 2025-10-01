@@ -1,7 +1,36 @@
 const modal = document.getElementById('successModal');
 const nextBtn = document.getElementById('nextBtn');
+const app = document.getElementById('app');
+const loginScreen = document.getElementById('loginScreen');
+const loginForm = document.getElementById('loginForm');
+const loginError = document.getElementById('loginError');
+const recordStringEl = document.getElementById('recordString');
+
+const credentials = {
+  username: 'podryad',
+  password: '12345'
+};
+
+if (loginForm) {
+  loginForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const username = document.getElementById('loginUsername').value.trim();
+    const password = document.getElementById('loginPassword').value;
+
+    if (username === credentials.username && password === credentials.password) {
+      loginError.classList.add('hidden');
+      loginScreen.classList.add('hidden');
+      app.classList.remove('hidden');
+      setTimeout(() => document.getElementById('number').focus(), 0);
+    } else {
+      loginError.classList.remove('hidden');
+    }
+  });
+}
+
 nextBtn.addEventListener('click', () => {
   modal.classList.add('hidden');
+  document.getElementById('number').focus();
 });
 
 const yearInput = document.getElementById('year');
@@ -48,15 +77,36 @@ dropZone.addEventListener('drop', (e) => {
 
 fileInput.addEventListener('change', updateDropZoneText);
 
-document.getElementById('dataForm').addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const form = e.target;
-  const formData = new FormData(form);
-  await fetch('/records', {
-    method: 'POST',
-    body: formData
+const dataForm = document.getElementById('dataForm');
+
+function formatRecordString(formData) {
+  const parts = [
+    `№ ${formData.get('number')}`,
+    `УКО ${formData.get('uko')}`,
+    `Договор ${formData.get('contract')}`,
+    `Назначение ${formData.get('purpose')}`,
+    `Дата ${formData.get('year')}`,
+    `КС-3 ${formData.get('ks3')}`,
+    `Мероприятие ${formData.get('eventName')}`,
+    `Адрес ${formData.get('address')}`,
+    `Стоимость ${formData.get('contractorCost')}`
+  ];
+  return parts.join(' | ');
+}
+
+if (dataForm) {
+  dataForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const formData = new FormData(form);
+    const summary = formatRecordString(formData);
+    await fetch('/records', {
+      method: 'POST',
+      body: formData
+    });
+    form.reset();
+    updateDropZoneText();
+    recordStringEl.textContent = summary;
+    modal.classList.remove('hidden');
   });
-  form.reset();
-  updateDropZoneText();
-  modal.classList.remove('hidden');
-});
+}
