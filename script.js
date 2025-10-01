@@ -6,58 +6,13 @@ const loginForm = document.getElementById('loginForm');
 const loginError = document.getElementById('loginError');
 const logoutBtn = document.getElementById('logoutBtn');
 const recordStringEl = document.getElementById('recordString');
-const contractorCard = document.getElementById('contractorCard');
-const contractorList = document.getElementById('contractorList');
 const companyNameEl = document.getElementById('companyName');
 const numberInput = document.getElementById('number');
 const loginUsernameInput = document.getElementById('loginUsername');
 const loginPasswordInput = document.getElementById('loginPassword');
 const defaultLoginErrorMessage = loginError ? loginError.textContent : '';
 
-let contractors = [];
 let activeContractor = null;
-
-function renderContractorList() {
-  if (!contractorCard || !contractorList) return;
-
-  contractorList.innerHTML = '';
-
-  if (!contractors.length) {
-    contractorCard.classList.add('hidden');
-    return;
-  }
-
-  contractorCard.classList.remove('hidden');
-
-  contractors.forEach((contractor) => {
-    const entry = document.createElement('div');
-    entry.className = 'contractor-entry';
-    entry.innerHTML = `
-      <div class="contractor-name">${contractor.name}</div>
-      <ul class="contractor-credentials">
-        <li><strong>Логин:</strong> ${contractor.login}</li>
-        <li><strong>Пароль:</strong> ${contractor.password}</li>
-      </ul>
-    `;
-    contractorList.appendChild(entry);
-  });
-}
-
-async function loadContractors() {
-  if (!contractorCard || !contractorList) return;
-
-  try {
-    const response = await fetch('/contractors');
-    if (!response.ok) {
-      throw new Error('Failed to load contractors');
-    }
-    contractors = await response.json();
-    renderContractorList();
-  } catch (error) {
-    contractorCard.classList.remove('hidden');
-    contractorList.textContent = 'Не удалось загрузить список подрядчиков';
-  }
-}
 
 if (loginForm) {
   loginForm.addEventListener('submit', async (e) => {
@@ -239,5 +194,3 @@ if (dataForm) {
     }
   });
 }
-
-loadContractors();
