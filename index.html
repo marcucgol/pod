@@ -18,13 +18,9 @@
         <label for="loginPassword">Пароль</label>
         <input id="loginPassword" name="password" type="password" autocomplete="current-password" required />
       </div>
-      <div class="contractor-card">
-        <div class="contractor-title">Пример подрядчика</div>
-        <div class="contractor-name">«Рога и Копыта»</div>
-        <ul class="contractor-credentials">
-          <li><strong>Логин:</strong> rogaikopyta</li>
-          <li><strong>Пароль:</strong> qwerty123</li>
-        </ul>
+      <div id="contractorCard" class="contractor-card hidden">
+        <div class="contractor-title">Доступные подрядчики</div>
+        <div id="contractorList" class="contractor-list"></div>
       </div>
       <p id="loginError" class="error hidden">Неверный логин или пароль</p>
       <div class="form-actions">
@@ -35,7 +31,7 @@
 
   <div id="app" class="hidden">
     <header class="app-header">
-      <div class="company-name">Подрядчик «Рога и Копыта»</div>
+      <div id="companyName" class="company-name"></div>
       <button id="logoutBtn" class="logout-button" type="button">Выход</button>
     </header>
     <h1>Форма ввода данных</h1>

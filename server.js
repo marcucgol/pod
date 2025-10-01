@@ -6,6 +6,15 @@ const multer = require('multer');
 const app = express();
 const DATA_FILE = path.join(__dirname, 'data.json');
 
+const contractors = [
+  {
+    id: 'rogaikopyta',
+    name: 'Рога и Копыта',
+    login: 'rogaikopyta',
+    password: 'qwerty123'
+  }
+];
+
 app.use(express.json());
 const publicDir = path.join(__dirname, 'public');
 if (fs.existsSync(publicDir)) {
@@ -13,6 +22,37 @@ if (fs.existsSync(publicDir)) {
 }
 app.use(express.static(__dirname));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+app.get('/contractors', (_req, res) => {
+  res.json(
+    contractors.map(({ id, name, login, password }) => ({
+      id,
+      name,
+      login,
+      password
+    }))
+  );
+});
+
+app.post('/login', (req, res) => {
+  const { username, password } = req.body || {};
+  const contractor = contractors.find(
+    (item) => item.login === username && item.password === password
+  );
+
+  if (!contractor) {
+    return res.status(401).json({ error: 'Invalid credentials' });
+  }
+
+  res.json({
+    success: true,
+    contractor: {
+      id: contractor.id,
+      name: contractor.name,
+      login: contractor.login
+    }
+  });
+});
 
 function readData() {
   try {

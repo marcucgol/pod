@@ -189,6 +189,18 @@ button:hover {
   color: #1e88e5;
 }
 
+.contractor-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.contractor-entry + .contractor-entry {
+  border-top: 1px solid rgba(51, 153, 255, 0.2);
+  padding-top: 12px;
+}
+
 .contractor-name {
   font-size: 20px;
   font-weight: bold;
