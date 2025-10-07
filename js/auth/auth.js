@@ -2,7 +2,8 @@ import elements from '../dom/elements.js';
 import { login as loginRequest } from '../api/client.js';
 import {
   setActiveContractor,
-  clearActiveContractor
+  clearActiveContractor,
+  getActiveContractor
 } from '../state/session.js';
 import { showAppView, showLoginView } from '../ui/appView.js';
 import { clearFormError } from '../ui/formError.js';
@@ -75,6 +76,20 @@ export function initAuth({ onLoginSuccess, onLogout } = {}) {
         onLogout();
       }
     });
+  }
+
+  const existingContractor = getActiveContractor();
+
+  if (existingContractor) {
+    hideLoginError();
+    showAppView(existingContractor);
+    if (onLoginSuccess) {
+      const maybePromise = onLoginSuccess(existingContractor);
+      if (maybePromise && typeof maybePromise.then === 'function') {
+        maybePromise.catch(() => {});
+      }
+    }
+    return;
   }
 
   focusLogin();
