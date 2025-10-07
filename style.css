@@ -229,7 +229,7 @@ button:hover {
 }
 
 .records-table thead th {
-  background: linear-gradient(90deg, #3399ff 0%, #2d7dd2 100%);
+  background-color: #2d7dd2;
   color: #fff;
   font-weight: 700;
   white-space: nowrap;

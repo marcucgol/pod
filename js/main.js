@@ -2,7 +2,12 @@ import { initAuth } from './auth/auth.js';
 import { createDropzoneController } from './ui/dropzone.js';
 import { createFormController } from './ui/form.js';
 import { initModal, showModal } from './ui/modal.js';
-import { loadRecords, clearRecords } from './ui/records.js';
+import {
+  loadRecords,
+  clearRecords,
+  startRecordsAutoRefresh,
+  stopRecordsAutoRefresh
+} from './ui/records.js';
 import { initTabs, setActiveTab } from './ui/tabs.js';
 
 const formController = createFormController({
@@ -35,10 +40,12 @@ initAuth({
     formController.reset();
     clearRecords();
     await loadRecords();
+    startRecordsAutoRefresh();
     formController.focusFirstField();
     setActiveTab('formTab');
   },
   onLogout: () => {
+    stopRecordsAutoRefresh();
     formController.reset();
     clearRecords();
     setActiveTab('formTab');

@@ -88,6 +88,30 @@ function createBodyRow(record) {
   return row;
 }
 
+let lastRenderedSignature = null;
+let isLoading = false;
+let pollTimer = null;
+
+function updateRenderedSignature(records) {
+  try {
+    lastRenderedSignature = JSON.stringify(records);
+  } catch (error) {
+    lastRenderedSignature = null;
+  }
+}
+
+function recordsChanged(records) {
+  if (!lastRenderedSignature) {
+    return true;
+  }
+
+  try {
+    return JSON.stringify(records) !== lastRenderedSignature;
+  } catch (error) {
+    return true;
+  }
+}
+
 export function renderRecords(records) {
   const { recordsContainer } = elements;
   if (!recordsContainer) return;
@@ -99,6 +123,7 @@ export function renderRecords(records) {
     empty.className = 'empty-state';
     empty.textContent = 'Нет отправленных форм';
     recordsContainer.appendChild(empty);
+    updateRenderedSignature([]);
     return;
   }
 
@@ -119,6 +144,7 @@ export function renderRecords(records) {
   table.append(thead, tbody);
   wrapper.appendChild(table);
   recordsContainer.appendChild(wrapper);
+  updateRenderedSignature(records);
 }
 
 function renderRecordsError() {
@@ -130,20 +156,58 @@ function renderRecordsError() {
   errorEl.className = 'error';
   errorEl.textContent = 'Не удалось загрузить формы. Попробуйте позже.';
   recordsContainer.appendChild(errorEl);
+  lastRenderedSignature = null;
 }
 
-export async function loadRecords() {
+export async function loadRecords({ silent = false } = {}) {
   const contractor = getActiveContractor();
   if (!contractor) return;
 
+  if (isLoading) {
+    return;
+  }
+
+  isLoading = true;
+
   try {
     const records = await fetchRecords(contractor.id);
-    renderRecords(records);
+    if (recordsChanged(records)) {
+      renderRecords(records);
+    } else if (!silent && !lastRenderedSignature) {
+      renderRecords(records);
+    }
   } catch (error) {
-    renderRecordsError();
+    if (!silent) {
+      renderRecordsError();
+    }
   }
+
+  isLoading = false;
 }
 
 export function clearRecords() {
-  renderRecords([]);
+  const { recordsContainer } = elements;
+  if (recordsContainer) {
+    recordsContainer.innerHTML = '';
+  }
+  lastRenderedSignature = null;
+}
+
+export function startRecordsAutoRefresh(interval = 5000) {
+  if (pollTimer) {
+    return;
+  }
+
+  pollTimer = setInterval(() => {
+    loadRecords({ silent: true });
+  }, interval);
+}
+
+export function stopRecordsAutoRefresh() {
+  if (!pollTimer) {
+    return;
+  }
+
+  clearInterval(pollTimer);
+  pollTimer = null;
 }
