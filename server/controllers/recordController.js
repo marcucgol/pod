@@ -1,6 +1,6 @@
 const contractors = require('../config/contractors');
 const createUpload = require('../middleware/createUpload');
-const { readData, writeData } = require('../utils/dataStore');
+const { readData } = require('../utils/dataStore');
 const { buildStoredPath } = require('../utils/fileNames');
 
 function getRecords(req, res) {
@@ -37,22 +37,15 @@ function createRecord(req, res) {
       return res.status(400).json({ error: 'Неизвестный подрядчик' });
     }
 
-    const records = readData();
-    const checkDate = new Date().toLocaleString('ru-RU');
     const files = (req.files || []).map((file) => buildStoredPath(recordId, file.filename));
 
-    const record = {
-      id: recordId,
-      ...req.body,
-      contractorId,
-      contractorName: contractor.name,
-      files,
-      checkDate
-    };
-
-    records.push(record);
-    writeData(records);
-    res.status(201).json({ success: true, record });
+    res.status(201).json({
+      success: true,
+      record: {
+        id: recordId,
+        files
+      }
+    });
   });
 }
 

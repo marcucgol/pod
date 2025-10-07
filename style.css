@@ -202,53 +202,55 @@ button:hover {
   width: 100%;
   max-height: 70vh;
   overflow: auto;
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.95);
   border-radius: 28px;
-  padding: 20px 24px;
-  box-sizing: border-box;
   box-shadow: 0 18px 40px rgba(0, 51, 102, 0.16);
+  border: 1px solid rgba(0, 51, 102, 0.12);
+  box-sizing: border-box;
 }
 
 .records-table {
   width: 100%;
-  border-collapse: separate;
-  border-spacing: 12px 14px;
-  min-width: 2400px;
+  min-width: 2200px;
+  border-collapse: collapse;
   background: transparent;
 }
 
 .records-table th,
 .records-table td {
-  border: none;
-  padding: 16px 20px;
+  border: 1px solid rgba(0, 51, 102, 0.14);
+  padding: 16px 18px;
   font-size: 14px;
   text-align: left;
   vertical-align: top;
   color: #003366;
-  border-radius: 22px;
-  box-shadow: 0 10px 24px rgba(0, 51, 102, 0.12);
+  background-color: #ffffff;
+  word-break: break-word;
 }
 
-.records-table th {
-  background-color: #3399ff;
+.records-table thead th {
+  background: linear-gradient(90deg, #3399ff 0%, #2d7dd2 100%);
   color: #fff;
-  font-weight: bold;
+  font-weight: 700;
   white-space: nowrap;
   text-transform: uppercase;
   letter-spacing: 0.4px;
 }
 
-.records-table td {
-  background-color: #f4f9ff;
-  word-break: break-word;
+.records-table tbody tr:nth-child(even) {
+  background-color: rgba(211, 230, 255, 0.35);
 }
 
 .records-table tbody tr:nth-child(even) td {
-  background-color: #e8f3ff;
+  background-color: transparent;
+}
+
+.records-table tbody tr:hover {
+  background-color: rgba(51, 153, 255, 0.12);
 }
 
 .records-table tbody tr:hover td {
-  background-color: #d6eaff;
+  background-color: transparent;
 }
 
 .empty-state {

@@ -23,12 +23,14 @@ function resolveDataFile() {
     candidates.push(customPath);
   }
 
-  const repositoryDefault = path.join(ROOT_DIR, 'data.json');
-  candidates.push(repositoryDefault);
-
   const windowsDefault = path.win32.join('C:', 'Users', 'User', 'SK', 'ck', 'data.json');
   if (!candidates.includes(windowsDefault)) {
     candidates.push(windowsDefault);
+  }
+
+  const repositoryDefault = path.join(ROOT_DIR, 'data.json');
+  if (!candidates.includes(repositoryDefault)) {
+    candidates.push(repositoryDefault);
   }
 
   const existingFile = candidates.find((candidate) => {
