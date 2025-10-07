@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const ROOT_DIR = path.join(__dirname, '..', '..');
+const { ROOT_DIR } = require('./env');
 
 function normalizeCandidate(candidatePath) {
   if (!candidatePath) {
@@ -23,7 +23,10 @@ function resolveDataFile() {
     candidates.push(customPath);
   }
 
-  const windowsDefault = path.win32.join('C:', 'Users', 'User', 'SK', 'ck', 'data.json');
+  const windowsBase = normalizeCandidate(process.env.WINDOWS_DATA_ROOT);
+  const windowsDefault = windowsBase
+    ? path.win32.join(windowsBase, 'ck', 'data.json')
+    : path.win32.join('C:', 'Users', 'User', 'SK', 'ck', 'data.json');
   if (!candidates.includes(windowsDefault)) {
     candidates.push(windowsDefault);
   }
